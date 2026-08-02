@@ -39,14 +39,15 @@ Recommanded to set to true.
 
 Recommanded to set to true.
 
-> `packetEncoding`:  \["None" | "Packet"\]
+> `packetEncoding`: \["None" | "Packet" | "Stream"\]
 
-UDP packet encoding method，`None` by default。
+UDP packet encoding method. The default is `None`.
 
-When this value is `None` , UDP connections will be split into streams based on their destination (Address and Port-Dependent Mapping)。
+When the value is `None`, UDP traffic is mapped separately for each destination address and port (Address and Port-Dependent Mapping).
 
-When this value is `Packet`, UDP connections from a single source connection will be encoded as UDP packet addr connection, which will be restored to its original form by a supported outbound as an Endpoint Independent Mapping UDP connection.
-This UDP behaviour is also known as FullCone or NAT1.
+When the value is `Packet`, each UDP packet is encoded together with its destination address while preserving packet boundaries. A compatible outbound can restore the packets as an Endpoint Independent Mapping UDP connection. This UDP behavior is also known as Full Cone or NAT1.
+
+When the value is `Stream`, each UDP packet and its destination address are length-prefixed and framed over a byte stream. A compatible outbound can restore the packets as an Endpoint Independent Mapping UDP connection. This UDP behavior is also known as Full Cone or NAT1.
 
 > `sniffingSettings`: [SniffingObject](../inbound.md#sniffingobject)
 

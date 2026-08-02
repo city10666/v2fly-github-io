@@ -25,14 +25,15 @@ Trojan is designed to operate in correctly configured TLS connections, as it doe
 
 A set of recognized password for this inbound.
 
-> `packetEncoding`:  \["None" | "Packet"\]
+> `packetEncoding`: \["None" | "Packet" | "Stream"\]
 
-UDP packet encoding method，`None` by default。(v5.4.0+)
+UDP packet encoding method. The default is `None`. (v5.4.0+)
 
-When this value is `None` , UDP connections will be split into streams based on their destination (Address and Port-Dependent Mapping)。
+When the value is `None`, UDP traffic is mapped separately for each destination address and port (Address and Port-Dependent Mapping).
 
-When this value is `Packet`, UDP connections from a single source connection will be encoded as UDP packet addr connection, which will be restored to its original form by a supported outbound as an Endpoint Independent Mapping UDP connection.
-This UDP behaviour is also known as FullCone or NAT1.
+When the value is `Packet`, each UDP packet is encoded together with its destination address while preserving packet boundaries. A compatible outbound can restore the packets as an Endpoint Independent Mapping UDP connection. This UDP behavior is also known as Full Cone or NAT1.
+
+When the value is `Stream`, each UDP packet and its destination address are length-prefixed and framed over a byte stream. A compatible outbound can restore the packets as an Endpoint Independent Mapping UDP connection. This UDP behavior is also known as Full Cone or NAT1.
 
 ## Trojan Outbound (simplified)
 
@@ -82,7 +83,9 @@ A password recognized by server.
 
 > `users`: [[UserObject](../protocol/user.md#user)]
 
-> `packetEncoding`: \["None" | "Packet"\]
+> `packetEncoding`: \["None" | "Packet" | "Stream"\]
+
+The values and default are the same as for `packetEncoding` in the simplified configuration above.
 
 > `fallbacks`: [[FallbackObject](#fallbackobject)]
 
